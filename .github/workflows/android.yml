@@ -1,0 +1,22 @@
+name: Rust
+
+on:
+  push:
+    branches: [ "android-build-test" ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Docker pull
+      run: docker pull notfl3/cargo-apk
+      
+    - name: Android Build
+      run: docker run --rm -v $(pwd)":/root/src" -w /root/src notfl3/cargo-apk cargo quad-apk build --example quad 
